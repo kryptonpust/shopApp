@@ -13,8 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.notes.auth.LoginScreen
+import com.example.shopapp.feature_auth.presentation.LoginScreen
 import com.example.shopapp.common.utils.Screens
+import com.example.shopapp.feature_store.presentation.cart.CartScreen
 import com.example.shopapp.feature_store.presentation.product.ProductScreen
 import com.example.shopapp.ui.theme.ShopAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +41,10 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screens.ProductScreen.route)
                         {
                             ProductScreen(navController)
+                        }
+                        composable(route = Screens.CartScreen.route)
+                        {
+                            CartScreen(navController)
                         }
                     }
                 }
