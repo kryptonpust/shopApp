@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.shopapp.BuildConfig
 import com.example.shopapp.common.data.LocalDatabase
+import com.example.shopapp.feature_auth.data.AuthApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,5 +30,12 @@ object AppModule {
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService
+    {
+        return retrofit.create(AuthApiService::class.java)
     }
 }
