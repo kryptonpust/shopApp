@@ -8,7 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -38,6 +38,9 @@ fun LoginScreen(
     val passwordState = viewModel.passwordState.value
     val rememberMeState = viewModel.rememberMeState.value
 
+    val loggingInState by remember {
+        viewModel.logInState
+    }
     val autoLoginState = viewModel.autoLoginState.value
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -164,17 +167,23 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                Button(
-                    onClick = {
-                        viewModel.loginUser()
-                    },
-                    shape = RoundedCornerShape(8)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp), text = "Sign In", textAlign = TextAlign.Center
-                    )
+                if(loggingInState)
+                {
+                    LoadingAnimation()
+                }else{
+                    Button(
+                        onClick = {
+                            viewModel.loginUser()
+                        },
+                        shape = RoundedCornerShape(8),
+                        enabled = !loggingInState
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp), text = "Sign In", textAlign = TextAlign.Center
+                        )
+                    }
                 }
             } else {
                 LoadingAnimation()

@@ -39,6 +39,9 @@ private val authUseCase: AuthUseCase
         _rememberMeState.value = value
     }
 
+    private val _logInState = mutableStateOf(false)
+    val logInState: State<Boolean> = _logInState
+
     private val _autoLoginState = mutableStateOf(false)
     val autoLoginState: State<Boolean> = _autoLoginState
 
@@ -64,15 +67,16 @@ private val authUseCase: AuthUseCase
 
     fun loginUser() {
         viewModelScope.launch {
-
+            _logInState.value=true
             when(val result=authUseCase.loginUseCase(userName = usernameState.value.text, password = passwordState.value.text, rememberMe = rememberMeState.value))
             {
                 is Resource.Success->{
-                    println()
                     _eventFlow.emit(UIEvents.SnackBarEvent("Login Success"))
                     _eventFlow.emit(UIEvents.NavigateEvent(Screens.ProductScreen.route,Screens.LoginScreen.route))
+                    _logInState.value=false
                 }
                 is Resource.Error->{
+                    _logInState.value=false
                     _eventFlow.emit(UIEvents.SnackBarEvent(result.message ?: "Unknown error occurred!")
                     )
 
