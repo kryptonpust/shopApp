@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.shopapp.common.presentation.LoadingAnimation
 import com.example.shopapp.common.utils.UIEvents
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -168,7 +169,9 @@ fun LoginScreen(
                         )
                     }
                 }
-//            }
+            else{
+                LoadingAnimation()
+            }
             Spacer(modifier = Modifier.height(24.dp))
 
         }
