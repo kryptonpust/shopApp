@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -52,8 +53,6 @@ fun ProductItem(
                     onItemClick(product)
 //                    visibleState = !visibleState
                 },
-
-            backgroundColor = Color.White,
             elevation = 2.dp,
 
             shape = RoundedCornerShape(8.dp)
@@ -86,7 +85,8 @@ fun ProductItem(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    style=MaterialTheme.typography.caption
                 )
                 Spacer(modifier = Modifier.height(4.dp))
 

@@ -41,7 +41,6 @@ fun CartItem(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color.White,
         elevation = 3.dp
     ) {
         Row(verticalAlignment = Alignment.CenterVertically,
