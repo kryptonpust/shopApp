@@ -41,6 +41,9 @@ fun LoginScreen(
     val loggingInState by remember {
         viewModel.logInState
     }
+    val welcomeText by remember{
+        viewModel.welcomeTextState
+    }
     val autoLoginState = viewModel.autoLoginState.value
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -93,7 +96,7 @@ fun LoginScreen(
                 horizontalAlignment = CenterHorizontally
             ) {
                 Text(
-                    text = "Welcome Back",
+                    text = welcomeText,
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Cursive

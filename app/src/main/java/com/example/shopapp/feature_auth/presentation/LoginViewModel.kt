@@ -48,8 +48,12 @@ private val authUseCase: AuthUseCase
     private val _eventFlow = MutableSharedFlow<UIEvents>()
     val eventFlow = _eventFlow.asSharedFlow()
 
+    private val _welcomeTextState = mutableStateOf("Welcome Back")
+    val welcomeTextState: State<String> = _welcomeTextState
+
     init {
         viewModelScope.launch {
+            _welcomeTextState.value="Logging In..."
             when(authUseCase.autoLoginUseCase())
             {
                 is Resource.Success->{
@@ -59,6 +63,7 @@ private val authUseCase: AuthUseCase
                 }
                 is Resource.Error->{
                     _autoLoginState.value=true
+                    _welcomeTextState.value="Welcome Back"
                 }
                 else -> {}
             }
