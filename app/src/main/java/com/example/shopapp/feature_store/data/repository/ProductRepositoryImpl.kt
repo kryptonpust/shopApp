@@ -17,7 +17,7 @@ class ProductRepositoryImpl(
     private val productDao: ProductDao
 ):ProductRepository {
     override fun getProducts(): Flow<List<ProductEntity>> {
-        TODO("Not yet implemented")
+        return productDao.getProducts()
     }
 
     override suspend fun refreshRemoteData():Resource<Unit> {

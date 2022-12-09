@@ -63,6 +63,10 @@ fun LoginScreen(
                     navController.navigate(event.route){
                         event.popUpTo?.let {
                             popUpTo(it)
+                            {
+                                inclusive=true
+                            }
+
                         }
                     }
                 }

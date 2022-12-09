@@ -50,7 +50,7 @@ private val authUseCase: AuthUseCase
             {
                 is Resource.Success->{
                     _eventFlow.emit(UIEvents.SnackBarEvent("Auto Login Success"))
-//                    _eventFlow.emit(UIEvents.NavigateEvent(Screens)) TODO navigate to HomePage
+                    _eventFlow.emit(UIEvents.NavigateEvent(Screens.ProductScreen.route, popUpTo = Screens.LoginScreen.route))
                 }
                 is Resource.Error->{
                     _autoLoginState.value=true
@@ -68,7 +68,7 @@ private val authUseCase: AuthUseCase
                 is Resource.Success->{
                     println()
                     _eventFlow.emit(UIEvents.SnackBarEvent("Login Success"))
-//                    _eventFlow.emit(UIEvents.NavigateEvent(Screens)) TODO navigate to HomePage
+                    _eventFlow.emit(UIEvents.NavigateEvent(Screens.ProductScreen.route,Screens.LoginScreen.route))
                 }
                 is Resource.Error->{
                     _eventFlow.emit(UIEvents.SnackBarEvent(result.message ?: "Unknown error occurred!")
