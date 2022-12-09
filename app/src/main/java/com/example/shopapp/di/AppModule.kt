@@ -7,6 +7,7 @@ import com.example.shopapp.common.data.LocalDatabase
 import com.example.shopapp.feature_auth.data.AuthApiService
 import com.example.shopapp.feature_auth.data.model.use_case.AuthUseCase
 import com.example.shopapp.feature_auth.data.model.use_case.LoginUseCase
+import com.example.shopapp.feature_auth.data.repository.AuthRepositoryImpl
 import com.example.shopapp.feature_auth.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
@@ -40,6 +41,13 @@ object AppModule {
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService
     {
         return retrofit.create(AuthApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(application: Application,authApiService: AuthApiService): AuthRepository
+    {
+        return AuthRepositoryImpl(application,authApiService)
     }
 
     @Provides

@@ -10,6 +10,7 @@ class LoginUseCase(private val authRepository: AuthRepository) {
         rememberMe:Boolean,
     ): Resource<Unit>
     {
+        //logic for validate username and password
         if(userName.isBlank())
         {
             return Resource.Error(message = "User name cannot be blank")

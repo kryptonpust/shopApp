@@ -5,5 +5,5 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class ShopApp:Application() {
-
+    var TOKEN: String?=null
 }
