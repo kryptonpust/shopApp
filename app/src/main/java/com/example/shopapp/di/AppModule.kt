@@ -8,6 +8,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -17,6 +19,15 @@ object AppModule {
     @Singleton
     fun provideLocalDatabase(app: Application): LocalDatabase {
         return Room.databaseBuilder(app, LocalDatabase::class.java, BuildConfig.DATABASE_NAME)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 }
