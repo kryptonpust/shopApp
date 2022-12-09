@@ -10,6 +10,7 @@ import com.example.shopapp.feature_auth.domain.use_case.LoginUseCase
 import com.example.shopapp.feature_auth.data.repository.AuthRepositoryImpl
 import com.example.shopapp.feature_auth.domain.repository.AuthRepository
 import com.example.shopapp.feature_auth.domain.use_case.AutoLoginUseCase
+import com.example.shopapp.feature_auth.domain.use_case.LogOutUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,21 +48,24 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
-        application: Application,
         authApiService: AuthApiService,
         localDatabase: LocalDatabase
     ): AuthRepository
     {
-        return AuthRepositoryImpl(application,authApiService,localDatabase.authDao)
+        return AuthRepositoryImpl(authApiService,localDatabase.authDao)
     }
 
     @Provides
     @Singleton
-    fun provideAuthUseCase(authRepository: AuthRepository): AuthUseCase
+    fun provideAuthUseCase(
+        application: Application,
+        authRepository: AuthRepository
+    ): AuthUseCase
     {
         return AuthUseCase(
-            loginUseCase = LoginUseCase(authRepository),
-            autoLoginUseCase = AutoLoginUseCase(authRepository)
+            loginUseCase = LoginUseCase(application,authRepository),
+            autoLoginUseCase = AutoLoginUseCase(application,authRepository),
+            logOutUseCase = LogOutUseCase(application,authRepository)
         )
     }
 }

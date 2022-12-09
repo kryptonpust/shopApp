@@ -14,25 +14,22 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class AuthRepositoryImpl(
-    private val application: Application,
     private val authApiService: AuthApiService,
     private val authDao: AuthDao,
     ): AuthRepository {
-    override suspend fun login(userName: String, password: String, rememberMe: Boolean): Resource<Unit> {
+    override suspend fun login(userName: String, password: String, rememberMe: Boolean): Resource<String> {
         //logic for network login
         try {
             val res=authApiService.loginUser(LoginRequest(username = userName, password = password))
-            return if(res.isSuccessful) {
+            if(res.isSuccessful) {
                 res.body()?.let{
                     authDao.insertToken(TokenEntity(null, it.token,rememberMe))
-                    if(application is ShopApp)
-                    {
-                        application.TOKEN= it.token
-                    }
+
+                    return Resource.Success(it.token)
                 }
-                Resource.Success(Unit)
+                return Resource.Error("No token found!!")
             }else{
-                Resource.Error(message = "Login Failed: ${if (res.code()==401) "Unauthorized" else res.code()}")
+                return Resource.Error(message = "Login Failed: ${if (res.code()==401) "Unauthorized" else res.code()}")
             }
         }catch (e: IOException) {
             return Resource.Error( message = "Could not reach the server, please check your internet connection!")
