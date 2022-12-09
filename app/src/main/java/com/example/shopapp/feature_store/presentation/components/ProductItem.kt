@@ -24,7 +24,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.shopapp.R
 import com.example.shopapp.common.utils.Utils
-import com.example.shopapp.feature_store.data.entity.Cart
+import com.example.shopapp.feature_store.data.entity.CartEntity
 import com.example.shopapp.feature_store.data.entity.ProductEntity
 import com.example.shopapp.feature_store.presentation.cart.CartEvent
 import com.example.shopapp.feature_store.presentation.product.ProductViewModel
@@ -140,15 +140,15 @@ fun ProductItem(
 
 
 //            val quantity = viewModel.getQuantityForId(product.id).collectAsState(initial = 0)
-            val cart =viewModel.getCartForId(product.id).collectAsState(initial = Cart(null, productId = product.id,0)).value
+            val cartEntity =viewModel.getCartForId(product.id).collectAsState(initial = CartEntity(null, productId = product.id,0)).value
             ProductCounter(
                 modifier= Modifier
                     .height(30.dp)
                     .offset(y = (-15).dp),
-                counter = cart.quantity,
+                counter = cartEntity.quantity,
                 endText = " পিস",
                 onButtonClick = {
-                    viewModel.onEvent(CartEvent.UpdateCart(Cart(id = cart.id, productId=cart.productId, quantity = it)))
+                    viewModel.onEvent(CartEvent.UpdateCart(CartEntity(id = cartEntity.id, productId=cartEntity.productId, quantity = it)))
                 })
         }
     }

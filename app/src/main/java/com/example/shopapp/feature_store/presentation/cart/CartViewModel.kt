@@ -36,7 +36,7 @@ class CartViewModel @Inject constructor(
         {
             is CartEvent.UpdateCart ->{
                 viewModelScope.launch {
-                    cartUseCase.insertOrUpdateCartUseCase(event.cart)
+                    cartUseCase.insertOrUpdateCartUseCase(event.cartEntity)
                 }
             }
             is CartEvent.DeleteCart->{

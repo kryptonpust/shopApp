@@ -6,10 +6,10 @@ import com.example.shopapp.feature_auth.data.AuthDao
 import com.example.shopapp.feature_auth.data.model.TokenEntity
 import com.example.shopapp.feature_store.data.CartDao
 import com.example.shopapp.feature_store.data.ProductDao
-import com.example.shopapp.feature_store.data.entity.Cart
+import com.example.shopapp.feature_store.data.entity.CartEntity
 import com.example.shopapp.feature_store.data.entity.ProductEntity
 
-@Database(entities = [TokenEntity::class,ProductEntity::class, Cart::class], version = 1)
+@Database(entities = [TokenEntity::class,ProductEntity::class, CartEntity::class], version = 1)
 abstract class LocalDatabase:RoomDatabase() {
     abstract val authDao: AuthDao
     abstract val productDao: ProductDao

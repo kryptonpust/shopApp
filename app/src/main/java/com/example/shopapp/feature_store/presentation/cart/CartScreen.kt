@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.shopapp.common.presentation.LoadingAnimation
 import com.example.shopapp.common.utils.UIEvents
-import com.example.shopapp.feature_store.data.entity.Cart
+import com.example.shopapp.feature_store.data.entity.CartEntity
 import com.example.shopapp.feature_store.presentation.components.CartItem
 import com.example.shopapp.feature_store.presentation.components.SearchBar
 import kotlinx.coroutines.flow.collectLatest
@@ -131,10 +131,10 @@ fun CartScreen(
                                     viewModel.onEvent(CartEvent.DeleteCart(it))
                                 },
                                 onButtonClicked = {
-                                    val cart = cartState.productWithCart[idx].cart
+                                    val cart = cartState.productWithCart[idx].cartEntity
                                     viewModel.onEvent(
                                         CartEvent.UpdateCart(
-                                            Cart(
+                                            CartEntity(
                                                 cart.id,
                                                 cart.productId,
                                                 it

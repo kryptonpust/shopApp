@@ -27,7 +27,7 @@ import coil.request.ImageRequest
 import com.example.shopapp.R
 import com.example.shopapp.common.utils.Utils
 import com.example.shopapp.feature_store.data.dto.ProductWithCart
-import com.example.shopapp.feature_store.data.entity.Cart
+import com.example.shopapp.feature_store.data.entity.CartEntity
 import com.example.shopapp.feature_store.data.entity.ProductEntity
 
 @Composable
@@ -89,7 +89,7 @@ fun CartItem(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Total Price: ",fontWeight = FontWeight.Bold, fontSize = 10.sp, color = Color.Gray)
                     Text(
-                        text = "৳${Utils.priceFormat(productWithCart.product.price.times(productWithCart.cart.quantity))}",
+                        text = "৳${Utils.priceFormat(productWithCart.product.price.times(productWithCart.cartEntity.quantity))}",
                         color = Color(0xFFDA2079),
                         fontSize = 18.sp,
                         maxLines = 3,
@@ -102,11 +102,11 @@ fun CartItem(
             Column(verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally) {
                 IconButton(onClick = {
-                    productWithCart.cart.id?.let(onDeleteClicked)
+                    productWithCart.cartEntity.id?.let(onDeleteClicked)
                 }) {
                     Icon(imageVector = Icons.Filled.Cancel, contentDescription = "", tint = Color(0xFFDA2079),)
                 }
-                ProductCounter(counter = productWithCart.cart.quantity, vertical = true, endText = "", onButtonClick = onButtonClicked)
+                ProductCounter(counter = productWithCart.cartEntity.quantity, vertical = true, endText = "", onButtonClick = onButtonClicked)
             }
         }
     }
@@ -118,7 +118,7 @@ fun Test()
 {
 
         CartItem(productWithCart = ProductWithCart(
-            Cart(null, 1, 1),
+            CartEntity(null, 1, 1),
             ProductEntity(-1, "OK",50f,"category","adfadsf","asdf")
         ),
             modifier= Modifier

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.shopapp.common.utils.Resource
 import com.example.shopapp.common.utils.Screens
 import com.example.shopapp.common.utils.UIEvents
-import com.example.shopapp.feature_store.data.entity.Cart
+import com.example.shopapp.feature_store.data.entity.CartEntity
 import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
 import com.example.shopapp.feature_store.presentation.cart.CartEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,12 +67,12 @@ class ProductViewModel @Inject constructor(
             }
             is CartEvent.UpdateCart->{
                 viewModelScope.launch {
-                    productUseCase.insertOrUpdateCartUseCase(event.cart)
+                    productUseCase.insertOrUpdateCartUseCase(event.cartEntity)
                 }
             }
         }
     }
-    fun getCartForId(id:Long): Flow<Cart>
+    fun getCartForId(id:Long): Flow<CartEntity>
     {
         return productUseCase.getCartByProductIdUseCase(id)
     }
