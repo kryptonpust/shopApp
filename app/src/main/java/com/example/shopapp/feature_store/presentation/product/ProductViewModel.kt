@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shopapp.common.utils.Resource
+import com.example.shopapp.common.utils.Screens
 import com.example.shopapp.common.utils.UIEvents
 import com.example.shopapp.feature_store.data.entity.Cart
 import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
 import com.example.shopapp.feature_store.presentation.cart.CartEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -53,6 +55,12 @@ class ProductViewModel @Inject constructor(
                     selectedProduct = event.product
                 )
 
+            }
+            is ProductEvent.Logout->{
+                viewModelScope.launch(Dispatchers.IO) {
+                    productUseCase.logOutUseCase()
+                    _eventFlow.emit(UIEvents.NavigateEvent(Screens.LoginScreen.route,Screens.LoginScreen.route))
+                }
             }
             is ProductEvent.Search ->{
                 getFilteredProducts(event.filter_text)

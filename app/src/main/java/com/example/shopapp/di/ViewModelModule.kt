@@ -14,6 +14,8 @@ import com.example.shopapp.feature_store.domain.useCase.cart.CartUseCase
 import com.example.shopapp.feature_store.domain.useCase.cart.DeleteCartByIdUseCase
 import com.example.shopapp.feature_store.domain.useCase.cart.GetAllCartsUseCase
 import com.example.shopapp.common.domain.use_case.InsertOrUpdateCartUseCase
+import com.example.shopapp.feature_auth.domain.repository.AuthRepository
+import com.example.shopapp.feature_auth.domain.use_case.LogOutUseCase
 import com.example.shopapp.feature_store.domain.useCase.product.GetProductsUseCase
 import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
 import com.example.shopapp.feature_store.domain.useCase.product.RefreshRemoteDataUseCase
@@ -79,13 +81,19 @@ object ViewModelModule {
 
     @Provides
     @ViewModelScoped
-    fun provideProductUseCase(productRepository: ProductRepository,cartRepository: CartRepository): ProductUseCase
+    fun provideProductUseCase(
+        application: Application,
+        productRepository: ProductRepository,
+        cartRepository: CartRepository,
+        authRepository: AuthRepository
+    ): ProductUseCase
     {
         return ProductUseCase(
             getProductsUseCase = GetProductsUseCase(productRepository=productRepository),
             refreshRemoteDataUseCase = RefreshRemoteDataUseCase(productRepository=productRepository),
             getCartByProductIdUseCase = GetCartByProductIdUseCase(cartRepository = cartRepository),
             insertOrUpdateCartUseCase = InsertOrUpdateCartUseCase(cartRepository= cartRepository),
+            logOutUseCase = LogOutUseCase(application = application,authRepository)
         )
     }
 

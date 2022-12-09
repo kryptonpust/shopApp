@@ -31,7 +31,7 @@ fun SearchBar(mutableState: MutableState<TextFieldValue>,onSearchAction: (String
     val focusManager = LocalFocusManager.current
     OutlinedTextField(
         modifier= Modifier
-            .padding(10.dp)
+            .padding(10.dp,5.dp)
             .fillMaxWidth(),
         value = state.value,
         onValueChange = { value ->

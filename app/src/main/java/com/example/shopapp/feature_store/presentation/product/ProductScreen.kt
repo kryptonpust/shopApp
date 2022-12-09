@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ShoppingCartCheckout
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -53,13 +54,7 @@ fun ProductScreen(
                 }
                 is UIEvents.NavigateEvent -> {
                     navController.navigate(event.route) {
-                        event.popUpTo?.let {
-                            popUpTo(it)
-                            {
-                                inclusive = true
-                            }
-
-                        }
+                        popUpTo(0)
                     }
                 }
             }
@@ -84,6 +79,17 @@ fun ProductScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingCartCheckout,
+                            tint = Color(0xFFFFB300),
+                            contentDescription = ""
+                        )
+                    }
+                    IconButton(onClick =
+                    {
+                        viewModel.onEvent(ProductEvent.Logout())
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Logout,
+                            tint = Color(0xFFF06292),
                             contentDescription = ""
                         )
                     }
