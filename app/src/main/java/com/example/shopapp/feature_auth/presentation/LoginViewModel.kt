@@ -77,39 +77,6 @@ private val authUseCase: AuthUseCase
                 }
                 else -> {}
             }
-//            _loginState.value = loginState.value.copy(isLoading = true)
-//
-//            val loginResult = loginUseCase(
-//                username = usernameState.value.text,
-//                password = passwordState.value.text,
-//                rememberMe = rememberMeState.value
-//            )
-//
-//            _loginState.value = loginState.value.copy(isLoading = false)
-//
-//            if (loginResult.usernameError != null) {
-//                _usernameState.value = usernameState.value.copy(error = loginResult.usernameError)
-//            }
-//
-//            if (loginResult.passwordError != null) {
-//                _passwordState.value = passwordState.value.copy(error = loginResult.passwordError)
-//            }
-//
-//            when (loginResult.result) {
-//                is Resource.Success -> {
-//                    _eventFlow.emit(
-//                        UiEvents.NavigateEvent(HomeScreenDestination.route)
-//                    )
-//                }
-//                is Resource.Error -> {
-//                    _eventFlow.emit(
-//                        UiEvents.SnackbarEvent(
-//                            loginResult.result.message ?: "Unknown error occurred!"
-//                        )
-//                    )
-//                }
-//                else -> {}
-//            }
         }
     }
 }
