@@ -4,14 +4,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shopapp.common.utils.Resource
+import com.example.shopapp.common.utils.UIEvents
 import com.example.shopapp.feature_store.data.entity.Cart
 import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
 import com.example.shopapp.feature_store.presentation.cart.CartEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,14 +24,23 @@ class ProductViewModel @Inject constructor(
     private val _productState= mutableStateOf(ProductState())
     val productState: State<ProductState> = _productState
 
-    private var getNotesJob: Job? = null
-//    private val _eventFlow = MutableSharedFlow<UiEvents>()
-//    val eventFlow: SharedFlow<UiEvents> = _eventFlow.asSharedFlow()
+
+    private var getLocalJob: Job? = null
+    private val _eventFlow = MutableSharedFlow<UIEvents>()
+    val eventFlow: SharedFlow<UIEvents> = _eventFlow.asSharedFlow()
 
     init{
         viewModelScope.launch {
-            productUseCase.refreshRemoteDataUseCase()
             getFilteredProducts("")
+            when(val res=productUseCase.refreshRemoteDataUseCase()){
+                is Resource.Success->{
+                    _eventFlow.emit(UIEvents.SnackBarEvent("Refresh Success"))
+                }
+                is Resource.Error->{
+                    _eventFlow.emit(UIEvents.SnackBarEvent(res.message ?: "Unknown error occurred!"))
+                }
+                else -> {}
+            }
         }
     }
 
@@ -61,10 +70,15 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun getFilteredProducts(filter_text:String) {
-        getNotesJob?.cancel()
-        getNotesJob = productUseCase.getProductsUseCase(filter_text).onEach {
+        getLocalJob?.cancel()
+        _productState.value=productState.value.copy(
+            products = emptyList(),
+            isLoading =true
+        )
+        getLocalJob = productUseCase.getProductsUseCase(filter_text).onEach {
             _productState.value=productState.value.copy(
-                products = it
+                products = it,
+                isLoading = false
             )
         }.launchIn(viewModelScope)
     }

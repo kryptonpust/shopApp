@@ -104,7 +104,7 @@ fun CartItem(
                 IconButton(onClick = {
                     productWithCart.cart.id?.let(onDeleteClicked)
                 }) {
-                    Icon(imageVector = Icons.Filled.Cancel, contentDescription = "")
+                    Icon(imageVector = Icons.Filled.Cancel, contentDescription = "", tint = Color(0xFFDA2079),)
                 }
                 ProductCounter(counter = productWithCart.cart.quantity, vertical = true, endText = "", onButtonClick = onButtonClicked)
             }

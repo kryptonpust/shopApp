@@ -44,21 +44,21 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when (event){
-                is UIEvents.SnackBarEvent->{
-                    scope.launch{
+            when (event) {
+                is UIEvents.SnackBarEvent -> {
+                    scope.launch {
                         snackbarHostState.showSnackbar(
                             message = event.message,
                             duration = SnackbarDuration.Short
                         )
                     }
                 }
-                is UIEvents.NavigateEvent->{
-                    navController.navigate(event.route){
+                is UIEvents.NavigateEvent -> {
+                    navController.navigate(event.route) {
                         event.popUpTo?.let {
                             popUpTo(it)
                             {
-                                inclusive=true
+                                inclusive = true
                             }
 
                         }
@@ -72,7 +72,7 @@ fun LoginScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
 
-    ) { padding->
+        ) { padding ->
         Column(
             Modifier
                 .fillMaxSize()
@@ -85,10 +85,17 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(64.dp))
 
             Column(
-                Modifier.padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = CenterHorizontally
+                Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = CenterHorizontally
             ) {
-                Text(text = "Welcome Back", fontSize = 40.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Cursive)
-                if(autoLoginState){
+                Text(
+                    text = "Welcome Back",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Cursive
+                )
+                if (autoLoginState) {
                     Text(
                         text = "Login to your account to continue shopping",
                         fontSize = 12.sp,
@@ -100,77 +107,76 @@ fun LoginScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            if(autoLoginState) {
+            if (autoLoginState) {
 //                Card(modifier = Modifier.fillMaxSize()) {
-                    Column {
-                        OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = usernameState.text,
-                            onValueChange = {
-                                viewModel.setUsername(it)
-                            },
-                            label = {
-                                Text(text = "Username")
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                            ),
+                Column {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = usernameState.text,
+                        onValueChange = {
+                            viewModel.setUsername(it)
+                        },
+                        label = {
+                            Text(text = "Username")
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                        ),
 
-                            )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
+                        )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Column {
-                        OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = passwordState.text,
-                            onValueChange = {
-                                viewModel.setPassword(it)
-                            },
-                            label = {
-                                Text(text = "Password")
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Password,
-                            ),
+                Column {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = passwordState.text,
+                        onValueChange = {
+                            viewModel.setPassword(it)
+                        },
+                        label = {
+                            Text(text = "Password")
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                        ),
 
-                            )
-                    }
+                        )
+                }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(checked = rememberMeState, onCheckedChange = {
-                                viewModel.setRememberMe(it)
-                            })
-                            Text(text = "Remember me", fontSize = 12.sp)
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    Button(
-                        onClick = {
-                            viewModel.loginUser()
-                        },
-                        shape = RoundedCornerShape(8)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(12.dp), text = "Sign In", textAlign = TextAlign.Center
-                        )
+                        Checkbox(checked = rememberMeState, onCheckedChange = {
+                            viewModel.setRememberMe(it)
+                        })
+                        Text(text = "Remember me", fontSize = 12.sp)
                     }
                 }
-            else{
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.loginUser()
+                    },
+                    shape = RoundedCornerShape(8)
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp), text = "Sign In", textAlign = TextAlign.Center
+                    )
+                }
+            } else {
                 LoadingAnimation()
             }
             Spacer(modifier = Modifier.height(24.dp))
@@ -181,8 +187,7 @@ fun LoginScreen(
 
 @Preview
 @Composable
-fun LoginScreenUITest()
-{
+fun LoginScreenUITest() {
     LoginScreen(rememberNavController())
 }
 

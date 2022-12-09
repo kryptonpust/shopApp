@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shopapp.feature_store.domain.useCase.cart.CartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,15 +19,11 @@ class CartViewModel @Inject constructor(
 
     private val _cartState= mutableStateOf(CartState())
     val cartState: State<CartState> = _cartState
-
+    private var getLocalJob: Job? = null
 
     init {
         viewModelScope.launch {
-            cartUseCase.getAllCartsUseCase().collectLatest {
-                _cartState.value=cartState.value.copy(
-                    productWithCart = it
-                )
-            }
+            getFilteredCarts("")
         }
     }
 
@@ -43,6 +41,18 @@ class CartViewModel @Inject constructor(
                     cartUseCase.deleteCartByIdUseCase(event.id)
                 }
             }
+            is CartEvent.Search->{
+                getFilteredCarts(event.filter_text)
+            }
         }
+    }
+
+    private fun getFilteredCarts(filter_text:String) {
+        getLocalJob?.cancel()
+        getLocalJob = cartUseCase.getAllCartsUseCase(filter_text).onEach {
+            _cartState.value=cartState.value.copy(
+                productWithCart = it
+            )
+        }.launchIn(viewModelScope)
     }
 }
