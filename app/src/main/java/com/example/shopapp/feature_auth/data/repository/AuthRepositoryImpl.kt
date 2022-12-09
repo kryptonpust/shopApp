@@ -1,11 +1,12 @@
 package com.example.shopapp.feature_auth.data.repository
 
+import com.example.shopapp.common.utils.Resource
 import com.example.shopapp.feature_auth.domain.model.ITokenModel
 import com.example.shopapp.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(): AuthRepository {
-    override suspend fun login(userName: String, password: String, rememberMe: Boolean) {
+    override suspend fun login(userName: String, password: String, rememberMe: Boolean): Resource<Unit> {
         TODO("Not yet implemented")
     }
 
