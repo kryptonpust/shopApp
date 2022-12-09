@@ -4,9 +4,16 @@ import android.app.Application
 import com.example.shopapp.BuildConfig
 import com.example.shopapp.ShopApp
 import com.example.shopapp.common.data.LocalDatabase
+import com.example.shopapp.common.domain.use_case.GetCartByProductIdUseCase
 import com.example.shopapp.feature_store.data.ProductApi
+import com.example.shopapp.feature_store.data.repository.CartRepositoryImpl
 import com.example.shopapp.feature_store.data.repository.ProductRepositoryImpl
+import com.example.shopapp.feature_store.domain.repository.CartRepository
 import com.example.shopapp.feature_store.domain.repository.ProductRepository
+import com.example.shopapp.feature_store.domain.useCase.cart.CartUseCase
+import com.example.shopapp.feature_store.domain.useCase.cart.DeleteCartByIdUseCase
+import com.example.shopapp.feature_store.domain.useCase.cart.GetAllCartsUseCase
+import com.example.shopapp.common.domain.use_case.InsertOrUpdateCartUseCase
 import com.example.shopapp.feature_store.domain.useCase.product.GetProductsUseCase
 import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
 import com.example.shopapp.feature_store.domain.useCase.product.RefreshRemoteDataUseCase
@@ -72,11 +79,30 @@ object ViewModelModule {
 
     @Provides
     @ViewModelScoped
-    fun provideProductUseCase(productRepository: ProductRepository): ProductUseCase
+    fun provideProductUseCase(productRepository: ProductRepository,cartRepository: CartRepository): ProductUseCase
     {
         return ProductUseCase(
             getProductsUseCase = GetProductsUseCase(productRepository=productRepository),
-            refreshRemoteDataUseCase = RefreshRemoteDataUseCase(productRepository=productRepository)
+            refreshRemoteDataUseCase = RefreshRemoteDataUseCase(productRepository=productRepository),
+            getCartByProductIdUseCase = GetCartByProductIdUseCase(cartRepository = cartRepository),
+            insertOrUpdateCartUseCase = InsertOrUpdateCartUseCase(cartRepository= cartRepository),
+        )
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideCartRepository(localDatabase: LocalDatabase): CartRepository {
+        return CartRepositoryImpl(localDatabase.cartDao)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideCartUseCase(cartRepository: CartRepository): CartUseCase
+    {
+        return CartUseCase(
+            getAllCartsUseCase= GetAllCartsUseCase(cartRepository = cartRepository),
+            insertOrUpdateCartUseCase= InsertOrUpdateCartUseCase(cartRepository=cartRepository),
+            deleteCartByIdUseCase= DeleteCartByIdUseCase(cartRepository=cartRepository),
         )
     }
 }

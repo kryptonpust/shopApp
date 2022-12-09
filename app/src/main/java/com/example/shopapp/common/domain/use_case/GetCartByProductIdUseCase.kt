@@ -1,0 +1,15 @@
+package com.example.shopapp.common.domain.use_case
+
+import com.example.shopapp.feature_store.data.entity.Cart
+import com.example.shopapp.feature_store.domain.repository.CartRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+
+class GetCartByProductIdUseCase(
+    private val cartRepository: CartRepository
+) {
+    operator fun invoke(id:Long): Flow<Cart>
+    {
+        return cartRepository.getCartByProductId(id).filterNotNull()
+    }
+}

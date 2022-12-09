@@ -1,4 +1,4 @@
-package com.example.notes.feature_product.presentation.components
+package com.example.shopapp.feature_store.presentation.components
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
@@ -18,11 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.shopapp.R
+import com.example.shopapp.feature_store.data.entity.Cart
 import com.example.shopapp.feature_store.data.entity.ProductEntity
+import com.example.shopapp.feature_store.presentation.cart.CartEvent
 import com.example.shopapp.feature_store.presentation.product.ProductViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -31,16 +32,15 @@ fun ProductItem(
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel,
     product: ProductEntity,
-    navigator: NavController,
     onItemClick: (ProductEntity) -> Unit,
-    selected: Boolean=false
+    selected: Boolean = false
 ) {
 
 
 //    SideEffect {
 //        println("Composed ProductItem: ${product.id}")
 //    }
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
+    Column(horizontalAlignment = CenterHorizontally,
     modifier = Modifier.fillMaxSize()) {
         Card(
             modifier = modifier
@@ -65,7 +65,7 @@ fun ProductItem(
                         ImageRequest.Builder(LocalContext.current)
                             .data(data = product.image)
                             .apply(block = fun ImageRequest.Builder.() {
-                            placeholder(R.drawable.ic_placeholder)
+                                placeholder(R.drawable.ic_placeholder)
                                 crossfade(true)
                             }).build()
                     ),
@@ -105,6 +105,26 @@ fun ProductItem(
 
                 Spacer(modifier = Modifier.height(12.dp))
             }
+        }
+        AnimatedVisibility(
+            visible = selected,
+            enter = scaleIn(),
+            exit = scaleOut()
+        )
+        {
+
+
+//            val quantity = viewModel.getQuantityForId(product.id).collectAsState(initial = 0)
+            val cart =viewModel.getCartForId(product.id).collectAsState(initial = Cart(null, productId = product.id,0)).value
+            ProductCounter(
+                modifier= Modifier
+                    .height(30.dp)
+                    .offset(y = (-15).dp),
+                counter = cart.quantity,
+                endText = " পিস",
+                onButtonClick = {
+                    viewModel.onEvent(CartEvent.UpdateCart(Cart(id = cart.id, productId=cart.productId, quantity = it)))
+                })
         }
     }
 }

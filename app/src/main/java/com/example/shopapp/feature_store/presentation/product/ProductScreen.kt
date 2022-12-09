@@ -15,7 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.notes.feature_product.presentation.components.ProductItem
+import com.example.shopapp.common.utils.Screens
+import com.example.shopapp.feature_store.presentation.components.ProductItem
+import com.example.shopapp.feature_store.presentation.components.SearchBar
 
 
 @Composable
@@ -37,7 +39,7 @@ fun ProductScreen(
                 actions = {
                     IconButton(onClick =
                     {
-                        //TODO
+                        navController.navigate(Screens.CartScreen.route)
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingCartCheckout,
@@ -58,9 +60,9 @@ fun ProductScreen(
         )
         {
             Spacer(modifier = Modifier.height(8.dp))
-//            SearchBar(onSearchAction = {
-//                viewModel.onEvent(ProductEvent.Search(it))
-//            })
+            SearchBar(onSearchAction = {
+                viewModel.onEvent(ProductEvent.Search(it))
+            })
             Spacer(modifier = Modifier.height(8.dp))
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -71,11 +73,10 @@ fun ProductScreen(
                     ProductItem(
                         viewModel = viewModel,
                         product = productsState.products[idx],
-                        selected = if (productsState.selectedProduct == null) false else productsState.selectedProduct == productsState.products[idx],
-                        navigator = navController,
                         onItemClick = { product ->
-                            //TODO
+                            viewModel.onEvent(ProductEvent.ProductSelected(product))
                         },
+                        selected = if (productsState.selectedProduct == null) false else productsState.selectedProduct == productsState.products[idx],
                     )
                 }
             }

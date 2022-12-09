@@ -1,8 +1,6 @@
 package com.example.shopapp.feature_store.data.repository
 
 import com.example.shopapp.common.utils.Resource
-import com.example.shopapp.feature_auth.data.dto.LoginRequest
-import com.example.shopapp.feature_auth.data.model.TokenEntity
 import com.example.shopapp.feature_store.data.ProductApi
 import com.example.shopapp.feature_store.data.ProductDao
 import com.example.shopapp.feature_store.data.dto.toDomain

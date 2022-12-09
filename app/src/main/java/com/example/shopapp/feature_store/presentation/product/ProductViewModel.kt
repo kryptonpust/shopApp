@@ -1,13 +1,15 @@
 package com.example.shopapp.feature_store.presentation.product
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shopapp.feature_store.data.entity.Cart
 import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
+import com.example.shopapp.feature_store.presentation.cart.CartEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -16,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val productUseCase: ProductUseCase,
-    private val test:String?
 ):ViewModel() {
 
 
@@ -28,16 +29,36 @@ class ProductViewModel @Inject constructor(
 //    val eventFlow: SharedFlow<UiEvents> = _eventFlow.asSharedFlow()
 
     init{
-        if (test != null) {
-            Log.d(ProductViewModel::class.simpleName,test)
-        }
-
         viewModelScope.launch {
             productUseCase.refreshRemoteDataUseCase()
             getFilteredProducts("")
         }
     }
 
+    fun onEvent(event: Any)
+    {
+        when(event)
+        {
+            is ProductEvent.ProductSelected ->{
+                _productState.value=productState.value.copy(
+                    selectedProduct = event.product
+                )
+
+            }
+            is ProductEvent.Search ->{
+                getFilteredProducts(event.filter_text)
+            }
+            is CartEvent.UpdateCart->{
+                viewModelScope.launch {
+                    productUseCase.insertOrUpdateCartUseCase(event.cart)
+                }
+            }
+        }
+    }
+    fun getCartForId(id:Long): Flow<Cart>
+    {
+        return productUseCase.getCartByProductIdUseCase(id)
+    }
 
     private fun getFilteredProducts(filter_text:String) {
         getNotesJob?.cancel()

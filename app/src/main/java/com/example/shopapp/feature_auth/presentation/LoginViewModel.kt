@@ -10,6 +10,7 @@ import com.example.shopapp.common.utils.Screens
 import com.example.shopapp.common.utils.UIEvents
 import com.example.shopapp.feature_auth.domain.use_case.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -50,6 +51,7 @@ private val authUseCase: AuthUseCase
             {
                 is Resource.Success->{
                     _eventFlow.emit(UIEvents.SnackBarEvent("Auto Login Success"))
+                    delay(500)
                     _eventFlow.emit(UIEvents.NavigateEvent(Screens.ProductScreen.route, popUpTo = Screens.LoginScreen.route))
                 }
                 is Resource.Error->{

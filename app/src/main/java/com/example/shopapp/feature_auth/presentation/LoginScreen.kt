@@ -1,9 +1,5 @@
-package com.example.notes.auth
+package com.example.shopapp.feature_auth.presentation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,13 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.shopapp.common.utils.UIEvents
-import com.example.shopapp.feature_auth.presentation.LoginViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -91,7 +84,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(64.dp))
 
             Column(
-                Modifier.padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = CenterHorizontally
             ) {
                 Text(text = "Welcome Back", fontSize = 40.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Cursive)
                 if(autoLoginState){
