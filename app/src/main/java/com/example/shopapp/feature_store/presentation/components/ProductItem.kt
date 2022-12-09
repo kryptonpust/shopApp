@@ -14,13 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.shopapp.R
+import com.example.shopapp.common.utils.Utils
 import com.example.shopapp.feature_store.data.entity.Cart
 import com.example.shopapp.feature_store.data.entity.ProductEntity
 import com.example.shopapp.feature_store.presentation.cart.CartEvent
@@ -60,6 +63,7 @@ fun ProductItem(
                     .padding(start = 16.dp, end = 16.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
+                Spacer(modifier = Modifier.height(4.dp))
                 Image(
                     painter = rememberAsyncImagePainter(
                         ImageRequest.Builder(LocalContext.current)
@@ -85,22 +89,43 @@ fun ProductItem(
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = product.category,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.ExtraLight
-                )
+
+                Row(modifier=Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "Price: ", fontWeight = FontWeight.SemiBold, fontSize = 10.sp, color = Color.Gray)
+                        Text(
+                            text = "৳${Utils.priceFormat(product.price)}",
+                            color = Color(0xFFDA2079),
+                            fontSize = 12.sp,
+                            maxLines = 3,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Text(
+                        text = "৳${Utils.priceFormat(product.price)}",
+                        color = Color(0xFFDA2079),
+                        fontSize = 10.sp,
+                        maxLines = 3,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(textDecoration = TextDecoration.LineThrough)
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = "$${product.price}",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "category: ", fontWeight = FontWeight.SemiBold, fontSize = 10.sp, color = Color.Gray)
+                    Text(
+                        text = product.category,
+                        color = Color(0xFF312ED1),
+                        fontSize = 12.sp,
+                        maxLines = 3,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
 
                 Spacer(modifier = Modifier.height(12.dp))

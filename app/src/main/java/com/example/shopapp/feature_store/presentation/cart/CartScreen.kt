@@ -24,7 +24,7 @@ fun CartScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "My Cart",
+                    Text(text = "আমার ব্যাগ",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis)
                 },

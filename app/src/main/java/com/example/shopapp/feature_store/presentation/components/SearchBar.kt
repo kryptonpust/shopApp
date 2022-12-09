@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -31,16 +28,18 @@ fun SearchBar(onSearchAction: (String)->Unit)
 {
     val state = remember { mutableStateOf(TextFieldValue("")) }
     val focusManager = LocalFocusManager.current
-    TextField(
+    OutlinedTextField(
+        modifier= Modifier
+            .padding(10.dp)
+            .fillMaxWidth(),
         value = state.value,
         onValueChange = { value ->
             state.value = value
         },
         placeholder={
-                    Text(text = "OK")
+                    Text(text = "কাঙ্ক্ষিত পণ্যটি খুঁজুন")
         },
-        modifier = Modifier
-            .fillMaxWidth(),
+
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Done
         ),
@@ -54,7 +53,7 @@ fun SearchBar(onSearchAction: (String)->Unit)
                     onClick = {
                         onSearchAction("")
                         state.value =
-                            TextFieldValue("") // Remove text from TextField when you press the 'X' icon
+                            TextFieldValue("")
                     }
                 ) {
                     Icon(
@@ -77,6 +76,9 @@ fun SearchBar(onSearchAction: (String)->Unit)
         },
         singleLine = true,
         shape = RoundedCornerShape(50.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = Color.White
+        )
     )
 }
 
@@ -85,5 +87,7 @@ fun SearchBar(onSearchAction: (String)->Unit)
 fun TestSearchUI()
 {
 
-    SearchBar(onSearchAction = {})
+    Surface() {
+        SearchBar(onSearchAction = {})
+    }
 }

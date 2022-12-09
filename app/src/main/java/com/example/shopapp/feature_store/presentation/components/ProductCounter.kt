@@ -29,7 +29,8 @@ fun ProductCounter(
     Card(
         modifier= modifier,
         elevation = 5.dp,
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        backgroundColor = Color(0xFFFFCCE4)
     ) {
         if(vertical)
         {
@@ -70,12 +71,12 @@ fun NegativeButtonWithText(
             enabled=counter>1,
             shape = CircleShape,
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(Color.Red),
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFBFDD)),
             border = BorderStroke(0.dp, Color.Transparent),
 
             onClick = { onButtonClick(counter-1) }
         ) {
-            Text(text = "-")
+            Text(text = "-", color = Color.White)
         }
 
 }
@@ -95,13 +96,13 @@ fun PositiveButton(counter: Long,onButtonClick: (Long) -> Unit)
         modifier=Modifier.size(20.dp),
         shape = CircleShape,
         contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.buttonColors(Color.Green),
+        colors = ButtonDefaults.buttonColors(Color(0xFF6200EE)),
         border = BorderStroke(0.dp, Color.Transparent),
         onClick = {
             onButtonClick(counter+1)
         }
     ) {
-        Text(text = "+")
+        Text(text = "+", color = Color.White)
     }
 }
 

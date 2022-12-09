@@ -71,6 +71,7 @@ fun ProductScreen(
             {
                 items(productsState.products.size) { idx ->
                     ProductItem(
+                        modifier=Modifier.width(200.dp),
                         viewModel = viewModel,
                         product = productsState.products[idx],
                         onItemClick = { product ->

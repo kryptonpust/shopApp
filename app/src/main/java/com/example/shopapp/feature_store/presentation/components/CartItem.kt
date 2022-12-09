@@ -80,7 +80,7 @@ fun CartItem(
                     Text(text = "Unit Price: ", fontWeight = FontWeight.SemiBold, fontSize = 10.sp, color = Color.Gray)
                     Text(
                         text = "৳${Utils.priceFormat(productWithCart.product.price)}",
-                        color = Color.Red,
+                        color = Color(0xFFDA2079),
                         fontSize = 18.sp,
                         maxLines = 3,
                         fontWeight = FontWeight.Bold
@@ -90,7 +90,7 @@ fun CartItem(
                     Text(text = "Total Price: ",fontWeight = FontWeight.Bold, fontSize = 10.sp, color = Color.Gray)
                     Text(
                         text = "৳${Utils.priceFormat(productWithCart.product.price.times(productWithCart.cart.quantity))}",
-                        color = Color.Red,
+                        color = Color(0xFFDA2079),
                         fontSize = 18.sp,
                         maxLines = 3,
                         fontWeight = FontWeight.Bold

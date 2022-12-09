@@ -99,6 +99,7 @@ fun LoginScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(24.dp))
             if(autoLoginState) {
 //                Card(modifier = Modifier.fillMaxSize()) {
                     Column {
