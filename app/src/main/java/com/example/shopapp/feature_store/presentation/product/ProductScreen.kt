@@ -11,7 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,10 +68,12 @@ fun ProductScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Shop",
+                        text = "বিপণি",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        fontFamily = FontFamily.Cursive
+                        fontFamily = FontFamily.Cursive,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
                     )
                 },
                 actions = {

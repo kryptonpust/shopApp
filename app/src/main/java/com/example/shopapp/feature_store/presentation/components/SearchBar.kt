@@ -58,7 +58,7 @@ fun SearchBar(mutableState: MutableState<TextFieldValue>,onSearchAction: (String
                     }
                 ) {
                     Icon(
-                        Icons.Default.Close,
+                        Icons.Filled.Close,
                         contentDescription = "",
                         modifier = Modifier
                             .size(24.dp),
@@ -67,7 +67,7 @@ fun SearchBar(mutableState: MutableState<TextFieldValue>,onSearchAction: (String
                 }
             }else{
                 Icon(
-                    Icons.Default.Search,
+                    Icons.Filled.Search,
                     contentDescription = "",
                     modifier = Modifier
                         .padding(15.dp)
@@ -77,9 +77,9 @@ fun SearchBar(mutableState: MutableState<TextFieldValue>,onSearchAction: (String
         },
         singleLine = true,
         shape = RoundedCornerShape(50.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color.White
-        )
+//        colors = TextFieldDefaults.outlinedTextFieldColors(
+//            backgroundColor = Color.White
+//        )
     )
 }
 
