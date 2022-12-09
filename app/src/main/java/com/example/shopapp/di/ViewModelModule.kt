@@ -3,6 +3,13 @@ package com.example.shopapp.di
 import android.app.Application
 import com.example.shopapp.BuildConfig
 import com.example.shopapp.ShopApp
+import com.example.shopapp.common.data.LocalDatabase
+import com.example.shopapp.feature_store.data.ProductApi
+import com.example.shopapp.feature_store.data.repository.ProductRepositoryImpl
+import com.example.shopapp.feature_store.domain.repository.ProductRepository
+import com.example.shopapp.feature_store.domain.useCase.product.GetProductsUseCase
+import com.example.shopapp.feature_store.domain.useCase.product.ProductUseCase
+import com.example.shopapp.feature_store.domain.useCase.product.RefreshRemoteDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,5 +55,28 @@ object ViewModelModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProductApi(@Named("authRetrofit") retrofit: Retrofit): ProductApi
+    {
+        return retrofit.create(ProductApi::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProductRepository(productApi: ProductApi, localDatabase: LocalDatabase): ProductRepository {
+        return ProductRepositoryImpl(productApi,localDatabase.productDao)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProductUseCase(productRepository: ProductRepository): ProductUseCase
+    {
+        return ProductUseCase(
+            getProductsUseCase = GetProductsUseCase(productRepository=productRepository),
+            refreshRemoteDataUseCase = RefreshRemoteDataUseCase(productRepository=productRepository)
+        )
     }
 }
