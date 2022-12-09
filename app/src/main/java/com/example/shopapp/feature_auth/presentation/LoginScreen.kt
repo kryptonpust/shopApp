@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.shopapp.common.utils.UIEvents
 import com.example.shopapp.feature_auth.presentation.LoginViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,30 +39,42 @@ fun LoginScreen(
     val passwordState = viewModel.passwordState.value
     val rememberMeState = viewModel.rememberMeState.value
 
-    val loginState = viewModel.loginState.value
+    val autoLoginState = viewModel.autoLoginState.value
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            scope.launch{
-                snackbarHostState.showSnackbar(
-                    message = event,
-                    duration = SnackbarDuration.Short
-                )
+            when (event){
+                is UIEvents.SnackBarEvent->{
+                    scope.launch{
+                        snackbarHostState.showSnackbar(
+                            message = event.message,
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+                }
+                is UIEvents.NavigateEvent->{
+                    navController.navigate(event.route){
+                        event.popUpTo?.let {
+                            popUpTo(it)
+                        }
+                    }
+                }
             }
+
         }
     }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
 
-    ) {
+    ) { padding->
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(it)
-                .padding(16.dp)
+                .padding(padding)
+
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -139,7 +152,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-//                    TODO implement login
+                    viewModel.loginUser()
                 },
                 shape = RoundedCornerShape(8)
             ) {
