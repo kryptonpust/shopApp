@@ -5,10 +5,11 @@ import androidx.room.Room
 import com.example.shopapp.BuildConfig
 import com.example.shopapp.common.data.LocalDatabase
 import com.example.shopapp.feature_auth.data.AuthApiService
-import com.example.shopapp.feature_auth.data.model.use_case.AuthUseCase
-import com.example.shopapp.feature_auth.data.model.use_case.LoginUseCase
+import com.example.shopapp.feature_auth.domain.use_case.AuthUseCase
+import com.example.shopapp.feature_auth.domain.use_case.LoginUseCase
 import com.example.shopapp.feature_auth.data.repository.AuthRepositoryImpl
 import com.example.shopapp.feature_auth.domain.repository.AuthRepository
+import com.example.shopapp.feature_auth.domain.use_case.AutoLoginUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,9 +46,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(application: Application,authApiService: AuthApiService): AuthRepository
+    fun provideAuthRepository(
+        application: Application,
+        authApiService: AuthApiService,
+        localDatabase: LocalDatabase
+    ): AuthRepository
     {
-        return AuthRepositoryImpl(application,authApiService)
+        return AuthRepositoryImpl(application,authApiService,localDatabase.authDao)
     }
 
     @Provides
@@ -56,6 +61,7 @@ object AppModule {
     {
         return AuthUseCase(
             loginUseCase = LoginUseCase(authRepository),
+            autoLoginUseCase = AutoLoginUseCase(authRepository)
         )
     }
 }

@@ -1,5 +1,9 @@
 package com.example.notes.auth
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +34,7 @@ import kotlinx.coroutines.launch
 
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -74,7 +79,7 @@ fun LoginScreen(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
-
+                .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -85,84 +90,88 @@ fun LoginScreen(
                 Modifier.padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Welcome Back", fontSize = 40.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Cursive)
-                Text(
-                    text = "Login to your account to continue shopping",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Light,
-                    fontFamily = FontFamily.Cursive
+                if(autoLoginState){
+                    Text(
+                        text = "Login to your account to continue shopping",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Light,
+                        fontFamily = FontFamily.Cursive
 
-                )
-            }
-
-            Column {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = usernameState.text,
-                    onValueChange = {
-                        viewModel.setUsername(it)
-                    },
-                    label = {
-                        Text(text = "Username")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                    ),
-
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Column {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = passwordState.text,
-                    onValueChange = {
-                        viewModel.setPassword(it)
-                    },
-                    label = {
-                        Text(text = "Password")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                    ),
-
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(checked = rememberMeState, onCheckedChange = {
-                        viewModel.setRememberMe(it)
-                    })
-                    Text(text = "Remember me", fontSize = 12.sp)
+                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            if(autoLoginState) {
+//                Card(modifier = Modifier.fillMaxSize()) {
+                    Column {
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = usernameState.text,
+                            onValueChange = {
+                                viewModel.setUsername(it)
+                            },
+                            label = {
+                                Text(text = "Username")
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                            ),
 
-            Button(
-                onClick = {
-                    viewModel.loginUser()
-                },
-                shape = RoundedCornerShape(8)
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp), text = "Sign In", textAlign = TextAlign.Center
-                )
-            }
+                            )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
 
+                    Column {
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = passwordState.text,
+                            onValueChange = {
+                                viewModel.setPassword(it)
+                            },
+                            label = {
+                                Text(text = "Password")
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                            ),
+
+                            )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(checked = rememberMeState, onCheckedChange = {
+                                viewModel.setRememberMe(it)
+                            })
+                            Text(text = "Remember me", fontSize = 12.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = {
+                            viewModel.loginUser()
+                        },
+                        shape = RoundedCornerShape(8)
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp), text = "Sign In", textAlign = TextAlign.Center
+                        )
+                    }
+                }
+//            }
             Spacer(modifier = Modifier.height(24.dp))
 
         }

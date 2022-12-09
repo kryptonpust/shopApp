@@ -10,18 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.notes.auth.LoginScreen
-import com.example.shopapp.common.utils.Resource
 import com.example.shopapp.common.utils.Screens
-import com.example.shopapp.feature_auth.data.model.use_case.AuthUseCase
 import com.example.shopapp.ui.theme.ShopAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

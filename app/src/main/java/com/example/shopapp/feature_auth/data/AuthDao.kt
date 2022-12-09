@@ -19,5 +19,5 @@ interface AuthDao {
     fun getTokenFlow(): Flow<TokenEntity?>
 
     @Query("SELECT * FROM TokenEntity LIMIT 1")
-    fun getToken(): TokenEntity?
+    suspend fun getToken(): TokenEntity?
 }

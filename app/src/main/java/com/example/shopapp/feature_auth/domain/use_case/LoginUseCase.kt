@@ -1,4 +1,4 @@
-package com.example.shopapp.feature_auth.data.model.use_case
+package com.example.shopapp.feature_auth.domain.use_case
 
 import com.example.shopapp.common.utils.Resource
 import com.example.shopapp.feature_auth.domain.repository.AuthRepository

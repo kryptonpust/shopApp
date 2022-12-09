@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.shopapp.common.utils.Resource
 import com.example.shopapp.common.utils.Screens
 import com.example.shopapp.common.utils.UIEvents
-import com.example.shopapp.feature_auth.data.model.use_case.AuthUseCase
+import com.example.shopapp.feature_auth.domain.use_case.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,7 +26,7 @@ private val authUseCase: AuthUseCase
         _usernameState.value = usernameState.value.copy(text = value)
     }
 
-    private val _passwordState = mutableStateOf(TextFieldValue("83r5^d_"))
+    private val _passwordState = mutableStateOf(TextFieldValue("83r5^_"))
     val passwordState: State<TextFieldValue> = _passwordState
     fun setPassword(value: String) {
         _passwordState.value = _passwordState.value.copy(text = value)
@@ -43,6 +43,22 @@ private val authUseCase: AuthUseCase
 
     private val _eventFlow = MutableSharedFlow<UIEvents>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            when(authUseCase.autoLoginUseCase())
+            {
+                is Resource.Success->{
+                    _eventFlow.emit(UIEvents.SnackBarEvent("Auto Login Success"))
+//                    _eventFlow.emit(UIEvents.NavigateEvent(Screens)) TODO navigate to HomePage
+                }
+                is Resource.Error->{
+                    _autoLoginState.value=true
+                }
+                else -> {}
+            }
+        }
+    }
 
     fun loginUser() {
         viewModelScope.launch {
