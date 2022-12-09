@@ -4,11 +4,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shopapp.common.utils.UIEvents
 import com.example.shopapp.feature_store.domain.useCase.cart.CartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +20,9 @@ class CartViewModel @Inject constructor(
     private val _cartState= mutableStateOf(CartState())
     val cartState: State<CartState> = _cartState
     private var getLocalJob: Job? = null
+
+    private val _eventFlow = MutableSharedFlow<UIEvents>()
+    val eventFlow: SharedFlow<UIEvents> = _eventFlow.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -39,6 +42,7 @@ class CartViewModel @Inject constructor(
             is CartEvent.DeleteCart->{
                 viewModelScope.launch {
                     cartUseCase.deleteCartByIdUseCase(event.id)
+                    _eventFlow.emit(UIEvents.SnackBarEvent("Item Deleted"))
                 }
             }
             is CartEvent.Search->{
@@ -49,9 +53,14 @@ class CartViewModel @Inject constructor(
 
     private fun getFilteredCarts(filter_text:String) {
         getLocalJob?.cancel()
+        _cartState.value=cartState.value.copy(
+            productWithCart = emptyList(),
+            isLoading = true
+        )
         getLocalJob = cartUseCase.getAllCartsUseCase(filter_text).onEach {
             _cartState.value=cartState.value.copy(
-                productWithCart = it
+                productWithCart = it,
+                isLoading = false
             )
         }.launchIn(viewModelScope)
     }

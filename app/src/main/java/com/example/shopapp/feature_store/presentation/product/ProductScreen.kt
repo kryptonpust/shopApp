@@ -93,8 +93,7 @@ fun ProductScreen(
         }
     ) { padding ->
         val productsState = viewModel.productState.value
-        if(productsState.isLoading)
-        {
+        if (productsState.isLoading) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -102,8 +101,7 @@ fun ProductScreen(
             ) {
                 LoadingAnimation()
             }
-        }
-        else {
+        } else {
 
             Column(
                 modifier = Modifier
