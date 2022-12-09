@@ -21,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.shopapp.feature_auth.presentation.LoginViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -29,6 +31,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
+    navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val usernameState = viewModel.usernameState.value
@@ -157,5 +160,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenUITest()
 {
-    LoginScreen()
+    LoginScreen(rememberNavController())
 }
+
